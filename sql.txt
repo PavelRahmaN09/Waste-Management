@@ -1,0 +1,82 @@
+
+CREATE TABLE recycling_centers (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name TEXT NOT NULL,
+    address TEXT NOT NULL,
+    contact TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL
+);
+
+
+CREATE TABLE garbage_types (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    center_id INT,
+    garbage_type VARCHAR(50),
+    sale_price DECIMAL(10, 2),    -- Assuming sale price is a decimal
+    quantity INT,                 -- Quantity can be the number of units
+    per_lit DECIMAL(10, 2),       -- Price per liter (if applicable)
+    per_kg DECIMAL(10, 2),        -- Price per kg (if applicable)
+    total_amount DECIMAL(10, 2),  -- Total amount for the garbage type (calculated)
+    date DATE,                    -- Date of entry
+    garbage_pic VARCHAR(255),     -- Path to the image of the garbage type (e.g., file path or URL)
+    picked_up_status BOOLEAN,     -- Whether the garbage is picked up (true/false)
+    FOREIGN KEY (center_id) REFERENCES recycling_centers(id) -- Reference to recycling_centers table
+);
+
+
+CREATE TABLE monthly_sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    center_id INT,
+    garbage_type_id INT,
+    january DECIMAL(10, 2) DEFAULT 0,
+    february DECIMAL(10, 2) DEFAULT 0,
+    march DECIMAL(10, 2) DEFAULT 0,
+    april DECIMAL(10, 2) DEFAULT 0,
+    may DECIMAL(10, 2) DEFAULT 0,
+    june DECIMAL(10, 2) DEFAULT 0,
+    july DECIMAL(10, 2) DEFAULT 0,
+    august DECIMAL(10, 2) DEFAULT 0,
+    september DECIMAL(10, 2) DEFAULT 0,
+    october DECIMAL(10, 2) DEFAULT 0,
+    november DECIMAL(10, 2) DEFAULT 0,
+    december DECIMAL(10, 2) DEFAULT 0,
+    total_sales DECIMAL(10, 2) DEFAULT 0,        -- Total sales for the entire year
+    yearly_sales DECIMAL(10, 2) DEFAULT 0,       -- Total sales for the year (should be sum of all months)
+    FOREIGN KEY (center_id) REFERENCES recycling_centers(id),  -- Reference to recycling_centers table
+    FOREIGN KEY (garbage_type_id) REFERENCES garbage_types(id)  -- Reference to garbage_types table
+);
+
+
+CREATE TABLE center_income (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    center_id INTEGER NOT NULL,
+    total_income REAL NOT NULL DEFAULT 0,
+    FOREIGN KEY (center_id) REFERENCES recycling_centers(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    profile_img TEXT DEFAULT NULL,
+    full_name VARCHAR(150) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    middle_name VARCHAR(50) DEFAULT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    role ENUM('admin', 'member') NOT NULL DEFAULT 'member',
+    gender ENUM('male', 'female', 'other') NOT NULL,
+    birthday DATE NOT NULL,
+    contact VARCHAR(20) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    address TEXT NOT NULL,
+    location TEXT NOT NULL,
+    longitude DECIMAL(10,8) NOT NULL,
+    latitude DECIMAL(11,8) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    account_status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+    total_income DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+

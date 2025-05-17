@@ -1,0 +1,18 @@
+
+Visit the URL in your browser to See Database Connected Successfully or Failed:
+
+http://127.0.0.1:5000/test_db
+If successful, it will display:
+
+Database Connected Successfully! ✅
+
+
+
+
+
+
+run project in terminal : 
+
+. venv/Scripts/activate
+
+python app.py
